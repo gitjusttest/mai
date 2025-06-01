@@ -1,13 +1,92 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<title>great domain name for sale</title>
-	<meta name="generator" content="BBEdit 15.5">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>m.ai - Premium Single-Character .AI Domain for Sale</title>
+  <meta name="description" content="Own m.ai, a rare single-character .AI domain symbolizing 'mankind with AI' and '买' (buy) or '卖' (sell) in Chinese. Perfect for AI innovators and global brands.">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-<p style="font-weight: 400; text-align: center;"><span style="font-size: 18pt;">great domain names for sale:</span><br /><span style="color: #3598db;"><strong><span style="font-size: 18pt;">m.ai</span></strong></span><br /><span style="color: #3598db;"><strong><span style="font-size: 18pt;">k.ai</span></strong></span><br /><span style="color: #3598db;"><strong><span style="font-size: 18pt;">you.me</span></strong></span></p>
-<p style="font-weight: 400; text-align: center;"><br /><span style="font-size: 18pt;">please email: <span style="color: #3598db;">chunceshi@gmail.com</span></span></p>
-<p style="font-weight: 400; text-align: center;"><span style="font-size: 18pt;">thank you</span></p>
+<body class="bg-gray-50 font-sans">
+  <!-- Header -->
+  <header class="bg-blue-600 text-white py-12">
+    <div class="container mx-auto text-center">
+      <h1 class="text-5xl font-bold mb-4">m.ai</h1>
+      <p class="text-xl">A Premium Single-Character .AI Domain for Sale</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto py-12 px-4">
+    <!-- Introduction -->
+    <section class="mb-12 text-center">
+      <p class="text-lg text-gray-700">Own a piece of the future with <strong>m.ai</strong>, a rare and valuable domain in the AI industry.</p>
+    </section>
+
+    <!-- Scarcity and Value -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Scarcity and Value of Single-Character .AI Domains</h2>
+      <p class="text-lg text-gray-600 mb-4">Single-character .AI domains are extremely scarce, with only 26 possible combinations. They are highly sought after for their brevity, memorability, and prestige, making them a valuable asset for any brand or business in the AI space.</p>
+    </section>
+
+    <!-- Unique Selling Points -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Why m.ai?</h2>
+      <p class="text-lg text-gray-600 mb-4"><strong>m.ai</strong> symbolizes the fusion of <strong>mankind and AI</strong>, representing innovation and progress. Additionally, in Chinese, 'm' sounds like <strong>买 (mǎi)</strong> meaning 'buy' or <strong>卖 (mài)</strong> meaning 'sell,' making it ideal for e-commerce or marketplace businesses.</p>
+      <p class="text-lg text-gray-600">With its global appeal and memorable nature, m.ai is perfect for visionary brands seeking to make a lasting impact.</p>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="text-center">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-6">Own m.ai Today</h2>
+      <p class="text-lg text-gray-600 mb-6">Don’t miss this opportunity to secure a premium domain. Contact us at <a href="mailto:chunceshi@gmail.com" class="text-blue-600 hover:underline">chunceshi@gmail.com</a> to make an offer or inquire further.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>© 2023. All rights reserved.</p>
+    </div>
+  </footer>
 </body>
 </html>
