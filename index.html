@@ -159,7 +159,7 @@
                         Submit Budget & Get Contact Info
                     </button>
                     <p id="budgetMessage" class="text-red-600 mt-4 hidden">
-                        For a single-character .AI domain, you need a budget of USD800K or more to start negotiations.
+                        For a single-character .AI domain, you need a budget of USD850K or more to start negotiations.
                     </p>
                     <p id="contactInfo" class="text-lg text-gray-700 mt-4 hidden">
                         Please contact us at <span class="email-obfuscated text-blue-600 hover:underline" data-user="contact" data-domain="m.ai"></span> to proceed.
@@ -180,7 +180,7 @@
             const budgetMessage = document.getElementById('budgetMessage');
             const contactInfo = document.getElementById('contactInfo');
             
-            if (budgetInput < 800000) {
+            if (budgetInput < 850000) {
                 budgetMessage.classList.remove('hidden');
                 contactInfo.classList.add('hidden');
             } else {
