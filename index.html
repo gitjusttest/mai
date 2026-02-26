@@ -1,193 +1,417 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m.ai - Premium Single-Character .AI Domain for Sale</title>
+    <title>m.ai - Domain For Sale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #fafafa;
+            --fg: #0a0a0a;
+            --muted: #737373;
+            --accent: #0a0a0a;
+            --card: #ffffff;
+            --border: #e5e5e5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9fafb;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .hero-section {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: white;
+        
+        .font-serif {
+            font-family: 'Instrument Serif', serif;
         }
-        .email-obfuscated::after {
-            content: attr(data-user) "@" attr(data-domain);
+        
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .container {
-            max-width: 4xl;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
+        
+        @keyframes draw {
+            from { width: 0; }
+            to { width: 100%; }
         }
-        .text-5xl { font-size: 3rem; }
-        .font-bold { font-weight: 700; }
-        .mb-4 { margin-bottom: 1rem; }
-        .text-xl { font-size: 1.25rem; }
-        .max-w-2xl { max-width: 42rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
-        .text-center { text-align: center; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .min-h-screen { min-height: 100vh; }
-        .flex-grow { flex-grow: 1; }
-        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
-        .text-3xl { font-size: 1.875rem; }
-        .font-semibold { font-weight: 600; }
-        .text-lg { font-size: 1.125rem; }
-        .text-gray-700 { color: #4b5563; }
-        .mb-12 { margin-bottom: 3rem; }
-        .list-disc { list-style-type: disc; }
-        .list-inside { list-style-position: inside; }
-        .space-y-2 > :not(:last-child) { margin-bottom: 0.5rem; }
-        .items-center { align-items: center; }
-        .border { border-width: 1px; }
-        .border-gray-300 { border-color: #d1d5db; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .p-3 { padding: 0.75rem; }
-        .w-full { width: 100%; }
-        .max-w-md { max-width: 28rem; }
-        .focus\:outline-none:focus { outline: none; }
-        .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); }
-        .focus\:ring-blue-500:focus { box-shadow: 0 0 0 2px #3b82f6; }
-        .bg-blue-600 { background-color: #2563eb; }
-        .text-white { color: #ffffff; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
-        .transition { transition: all 0.3s; }
-        .text-red-600 { color: #dc2626; }
-        .mt-4 { margin-top: 1rem; }
-        .hidden { display: none; }
-        .text-blue-600 { color: #2563eb; }
-        .hover\:underline:hover { text-decoration: underline; }
-        .bg-gray-800 { background-color: #1f2a44; }
-        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        
+        .animate-fade-up {
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        
+        .sale-badge {
+            background: var(--fg);
+            color: var(--bg);
+        }
+        
+        .domain-display {
+            font-size: clamp(100px, 20vw, 280px);
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+        }
+        
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+        }
+        
+        .input-field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--fg);
+        }
+        
+        .btn-black {
+            background: var(--fg);
+            color: var(--bg);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .btn-black:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-black:active {
+            transform: scale(0.98);
+        }
+        
+        .divider {
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            letter-spacing: -0.02em;
+        }
+        
+        .stat-number {
+            font-size: clamp(48px, 8vw, 72px);
+            letter-spacing: -0.03em;
+        }
+        
+        .underline-accent {
+            position: relative;
+        }
+        
+        .underline-accent::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--fg);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .underline-accent:hover::after {
+            width: 100%;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
-    <div class="min-h-screen flex flex-col">
-        <!-- Header Section -->
-        <header class="hero-section py-16 text-center">
-            <h1 class="text-5xl font-bold mb-4">m.ai - A Rare Opportunity</h1>
-            <p class="text-xl max-w-2xl mx-auto">Own a premium single-character .AI domain that embodies innovation, value, and global appeal.</p>
-        </header>
-
-        <!-- Main Content -->
-        <main class="flex-grow container px-4 py-12">
-            <!-- Value Proposition -->
-            <section class="mb-12">
-                <h2 class="text-3xl font-semibold mb-4">The Rarity and Value of Single-Character .AI Domains</h2>
-                <p class="text-lg text-gray-700 mb-4">
-                    Single-character .AI domains are among the most exclusive digital assets in the world. With only 26 possible letters and 10 digits, their scarcity makes them highly sought-after by visionary companies, startups, and investors in the artificial intelligence space.
-                </p>
-                <p class="text-lg text-gray-700 mb-4">
-                    The .AI extension is synonymous with cutting-edge technology and innovation, making it the perfect choice for businesses shaping the future. A single-character domain like <strong>m.ai</strong> offers unmatched brevity, memorability, and prestige, positioning your brand at the forefront of the AI revolution.
-                </p>
-            </section>
-
-            <!-- Unique Selling Points -->
-            <section class="mb-12">
-                <h2 class="text-3xl font-semibold mb-4">Why m.ai Stands Out</h2>
-                <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
-                    <li><strong>Symbolic Power:</strong> m.ai represents the fusion of <em>Mankind</em> and <em>Artificial Intelligence</em>, symbolizing the harmony between human ingenuity and technological advancement.</li>
-                    <li><strong>Global Appeal:</strong> In Chinese, "m.ai" phonetically aligns with "buy" (买) or "sell" (卖), making it an ideal choice for businesses targeting the massive Chinese market or e-commerce sectors.</li>
-                    <li><strong>Brand Versatility:</strong> Its simplicity and elegance make m.ai adaptable for industries ranging from AI research to fintech, healthcare, and beyond.</li>
-                </ul>
-            </section>
-
-            <!-- Budget Input Section -->
-            <section class="mb-12">
-                <h2 class="text-3xl font-semibold mb-4">Interested in Acquiring m.ai?</h2>
-                <p class="text-lg text-gray-700 mb-4">
-                    To initiate discussions, please provide your purchasing budget below. Note that single-character .AI domains are premium assets requiring significant investment.
-                </p>
-                <div class="flex flex-col items-center">
-                    <input
-                        type="number"
-                        id="budgetInput"
-                        placeholder="Enter your budget in USD"
-                        class="border border-gray-300 rounded-lg p-3 w-full max-w-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                    <button
-                        onclick="checkBudget()"
-                        class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-                    >
-                        Submit Budget & Get Contact Info
-                    </button>
-                    <p id="budgetMessage" class="text-red-600 mt-4 hidden">
-                        For a single-character .AI domain, you need a budget of USD1M or more to start negotiation.
-                    </p>
-                    <p id="contactInfo" class="text-lg text-gray-700 mt-4 hidden">
-                        Please contact us at <span class="email-obfuscated text-blue-600 hover:underline" data-user="contact" data-domain="m.ai"></span> to get asking price.
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-24 pb-16">
+        <div class="max-w-7xl mx-auto w-full">
+            <!-- Sale Badge -->
+            <div class="animate-fade-up delay-1 mb-8">
+                <span class="sale-badge inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-widest uppercase">
+                    <span class="w-1.5 h-1.5 bg-current rounded-full"></span>
+                    Domain For Sale
+                </span>
+            </div>
+            
+            <!-- Domain -->
+            <div class="animate-fade-up delay-2">
+                <h1 class="domain-display font-serif font-normal">
+                    m.ai
+                </h1>
+            </div>
+            
+            <!-- Tagline -->
+            <p class="text-xl md:text-2xl text-[var(--muted)] mt-6 mb-10 animate-fade-up delay-3 font-light max-w-xl">
+                Where mankind meets artificial intelligence
+            </p>
+            
+            <!-- CTA -->
+            <div class="animate-fade-up delay-4">
+                <a href="#inquire" class="btn-black inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-medium tracking-wide">
+                    Submit Inquiry
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Scarcity Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <div>
+                    <p class="text-xs tracking-widest uppercase text-[var(--muted)] mb-4">Scarcity</p>
+                    <h2 class="section-title font-serif font-normal mb-6">
+                        Only 26 letters<br/>exist in the world
+                    </h2>
+                    <p class="text-[var(--muted)] text-lg leading-relaxed">
+                        Single-letter .ai domains are the most exclusive digital assets in the artificial intelligence space. 
+                        Once acquired, they are virtually irreplaceable.
                     </p>
                 </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white text-center py-6">
-            <p>© 2025 m.ai. All rights reserved.</p>
-        </footer>
-    </div>
-
-    <script>
-        function checkBudget() {
-            const budgetInput = document.getElementById('budgetInput').value;
-            const budgetMessage = document.getElementById('budgetMessage');
-            const contactInfo = document.getElementById('contactInfo');
+                <div class="flex justify-center lg:justify-end">
+                    <div class="stat-number font-serif font-normal text-[var(--muted)]">26</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="divider max-w-7xl mx-auto"></div>
+    
+    <!-- Meaning Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-xs tracking-widest uppercase text-[var(--muted)] mb-12 reveal">Significance</p>
             
-            if (budgetInput < 1000000) {
-                budgetMessage.classList.remove('hidden');
-                contactInfo.classList.add('hidden');
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <article class="card rounded-2xl p-8 md:p-10 reveal">
+                    <div class="text-sm font-medium mb-6">01</div>
+                    <h3 class="text-2xl font-serif font-normal mb-4">Mankind x AI</h3>
+                    <p class="text-[var(--muted)] leading-relaxed">
+                        The letter M represents mankind. Combined with .ai, this domain symbolizes the convergence of human wisdom and artificial intelligence.
+                    </p>
+                </article>
+                
+                <article class="card rounded-2xl p-8 md:p-10 reveal">
+                    <div class="text-sm font-medium mb-6">02</div>
+                    <h3 class="text-2xl font-serif font-normal mb-4">Chinese: Mai</h3>
+                    <p class="text-[var(--muted)] leading-relaxed">
+                        In Chinese, "m.ai" phonetically aligns with "buy" (买) or "sell" (卖), making it an ideal choice for businesses targeting the massive Chinese market or e-commerce sectors.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+    
+    <div class="divider max-w-7xl mx-auto"></div>
+    
+    <!-- Inquire Section -->
+    <section id="inquire" class="py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <div class="max-w-2xl mx-auto">
+            <div class="reveal text-center mb-12">
+                <p class="text-xs tracking-widest uppercase text-[var(--muted)] mb-4">Acquisition</p>
+                <h2 class="section-title font-serif font-normal">Submit Your Offer</h2>
+            </div>
+            
+            <div class="card rounded-2xl p-8 md:p-10 reveal">
+                <!-- Budget Input -->
+                <div id="budget-form">
+                    <label for="budget" class="block text-sm text-[var(--muted)] mb-3">
+                        Your budget (USD)
+                    </label>
+                    <div class="relative mb-6">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]">$</span>
+                        <input 
+                            type="text" 
+                            id="budget"
+                            class="input-field w-full pl-9 pr-4 py-4 rounded-xl text-lg"
+                            placeholder="Enter amount"
+                        >
+                    </div>
+                    <button 
+                        id="submit-btn"
+                        class="btn-black w-full py-4 rounded-xl text-sm font-medium tracking-wide"
+                    >
+                        Continue
+                    </button>
+                </div>
+                
+                <!-- Message (Budget Too Low) -->
+                <div id="message-box" class="hidden text-center py-4">
+                    <div class="bg-[var(--bg)] rounded-xl p-6 mb-6">
+                        <p class="text-[var(--muted)] leading-relaxed">
+                            For single-letter .ai domains, a <strong class="text-[var(--fg)]">7-figure budget (USD 1,000,000+)</strong> is required to initiate negotiations.
+                        </p>
+                    </div>
+                    <button 
+                        id="retry-btn"
+                        class="text-sm text-[var(--muted)] underline-accent hover:text-[var(--fg)] transition-colors"
+                    >
+                        Try again
+                    </button>
+                </div>
+                
+                <!-- Contact (Qualified) -->
+                <div id="contact-box" class="hidden text-center">
+                    <p class="text-[var(--muted)] mb-4">To get asking price, please contact:</p>
+                    <div class="bg-[var(--bg)] rounded-xl p-6">
+                        <p class="text-sm text-[var(--muted)] mb-2">Email</p>
+                        <div id="email" class="text-xl font-medium cursor-pointer hover:opacity-70 transition-opacity" tabindex="0" role="button"></div>
+                    </div>
+                    <p class="text-xs text-[var(--muted)] mt-4">Click to copy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 md:px-12 lg:px-24">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-serif text-xl">m.ai</p>
+            <p class="text-sm text-[var(--muted)]">All rights reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 滚动动画
+        const reveals = document.querySelectorAll('.reveal');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        reveals.forEach(el => observer.observe(el));
+        
+        // 表单逻辑
+        const budgetInput = document.getElementById('budget');
+        const submitBtn = document.getElementById('submit-btn');
+        const budgetForm = document.getElementById('budget-form');
+        const messageBox = document.getElementById('message-box');
+        const contactBox = document.getElementById('contact-box');
+        const retryBtn = document.getElementById('retry-btn');
+        const emailEl = document.getElementById('email');
+        
+        // 格式化输入
+        budgetInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/[^0-9]/g, '');
+            if (val) {
+                val = parseInt(val, 10).toLocaleString('en-US');
+            }
+            e.target.value = val;
+        });
+        
+        // 提交
+        submitBtn.addEventListener('click', handleSubmit);
+        budgetInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSubmit();
+        });
+        
+        function handleSubmit() {
+            const raw = budgetInput.value.replace(/[^0-9]/g, '');
+            const budget = parseInt(raw, 10) || 0;
+            
+            if (budget < 1000000) {
+                budgetForm.classList.add('hidden');
+                messageBox.classList.remove('hidden');
+                contactBox.classList.add('hidden');
             } else {
-                budgetMessage.classList.add('hidden');
-                contactInfo.classList.remove('hidden');
+                showContact();
             }
         }
+        
+        function showContact() {
+            budgetForm.classList.add('hidden');
+            messageBox.classList.add('hidden');
+            contactBox.classList.remove('hidden');
+            
+            // 防爬虫邮箱
+            const parts = ['contact', '@', 'm.ai'];
+            emailEl.innerHTML = '';
+            parts.forEach(p => {
+                const span = document.createElement('span');
+                span.textContent = p;
+                emailEl.appendChild(span);
+            });
+            
+            // 复制功能
+            const copyEmail = () => {
+                const email = parts.join('');
+                navigator.clipboard.writeText(email).then(() => {
+                    emailEl.innerHTML = 'Copied';
+                    setTimeout(() => {
+                        emailEl.innerHTML = '';
+                        parts.forEach(p => {
+                            const span = document.createElement('span');
+                            span.textContent = p;
+                            emailEl.appendChild(span);
+                        });
+                    }, 1500);
+                });
+            };
+            
+            emailEl.onclick = copyEmail;
+            emailEl.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyEmail();
+                }
+            };
+        }
+        
+        // 重试
+        retryBtn.addEventListener('click', () => {
+            budgetInput.value = '';
+            budgetForm.classList.remove('hidden');
+            messageBox.classList.add('hidden');
+            contactBox.classList.add('hidden');
+            budgetInput.focus();
+        });
     </script>
 </body>
 </html>
