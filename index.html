@@ -228,7 +228,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <article class="card rounded-2xl p-8 md:p-10 reveal">
                     <div class="text-sm font-medium mb-6">01</div>
-                    <h3 class="text-2xl font-serif font-normal mb-4">Mankind x AI</h3>
+                    <h3 class="text-2xl font-serif font-normal mb-4">Mankind and AI</h3>
                     <p class="text-[var(--muted)] leading-relaxed">
                         The letter M represents mankind. Combined with .ai, this domain symbolizes the convergence of human wisdom and artificial intelligence.
                     </p>
@@ -252,14 +252,14 @@
         <div class="max-w-2xl mx-auto">
             <div class="reveal text-center mb-12">
                 <p class="text-xs tracking-widest uppercase text-[var(--muted)] mb-4">Acquisition</p>
-                <h2 class="section-title font-serif font-normal">Submit Your Offer</h2>
+                <h2 class="section-title font-serif font-normal">Buy Now:  USD9,000,000</h2>
             </div>
             
             <div class="card rounded-2xl p-8 md:p-10 reveal">
                 <!-- Budget Input -->
                 <div id="budget-form">
                     <label for="budget" class="block text-sm text-[var(--muted)] mb-3">
-                        Your budget (USD)
+                        Make offer and initiate discussions (Your budget in USD)
                     </label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]">$</span>
@@ -282,7 +282,7 @@
                 <div id="message-box" class="hidden text-center py-4">
                     <div class="bg-[var(--bg)] rounded-xl p-6 mb-6">
                         <p class="text-[var(--muted)] leading-relaxed">
-                            For single-letter .ai domains, a <strong class="text-[var(--fg)]">7-figure budget (USD 1,000,000+)</strong> is required to initiate negotiations.
+                            You’ll need at least <strong class="text-[var(--fg)]">a US$1.5 million budget</strong> to even begin negotiations for the domain.
                         </p>
                     </div>
                     <button 
@@ -295,7 +295,7 @@
                 
                 <!-- Contact (Qualified) -->
                 <div id="contact-box" class="hidden text-center">
-                    <p class="text-[var(--muted)] mb-4">To get asking price, please contact:</p>
+                    <p class="text-[var(--muted)] mb-4">To initiate negotiations, please contact:</p>
                     <div class="bg-[var(--bg)] rounded-xl p-6">
                         <p class="text-sm text-[var(--muted)] mb-2">Email</p>
                         <div id="email" class="text-xl font-medium cursor-pointer hover:opacity-70 transition-opacity" tabindex="0" role="button"></div>
@@ -356,7 +356,7 @@
             const raw = budgetInput.value.replace(/[^0-9]/g, '');
             const budget = parseInt(raw, 10) || 0;
             
-            if (budget < 1000000) {
+            if (budget < 1500000) {
                 budgetForm.classList.add('hidden');
                 messageBox.classList.remove('hidden');
                 contactBox.classList.add('hidden');
